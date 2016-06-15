@@ -5,6 +5,7 @@ package com.codepath.flixster;
  */
 
 import android.content.Context;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,12 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MoviesAdapter extends ArrayAdapter<Movie> {
 
 
-    public MoviesAdapter(Context context, ArrayList<Movie> movies){
+    public MoviesAdapter(Context context, List<Movie> movies){
         super(context, R.layout.item_movie,movies);
     }
 
@@ -36,16 +38,22 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
 
             // Lookup view for data population
             TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+            TextView tvOverview = (TextView) convertView.findViewById(R.id.tvOverview);
+
+
             ImageView ivPoster = (ImageView) convertView.findViewById(R.id.ivPoster);
+            //takes out old
+            ivPoster.setImageResource(0);
 
 
             // Populate the data into the template view using the data object
             tvTitle.setText(movie.title);
+            tvOverview.setText(movie.getOverview());
 
-            Log.d("MoviesAdapter","Position: " + position);
+            /*Log.d("MoviesAdapter","Position: " + position);
 
-            String imageUri = "https://i.imgur.com/tGbaZCY.jpg";
-            Picasso.with(getContext()).load(imageUri).into(ivPoster);
+            String imageUri = "https://i.imgur.com/tGbaZCY.jpg";*/
+            Picasso.with(getContext()).load(movie.getPosterPath()).into(ivPoster);
 
             // Return the completed view to render on screen
             return convertView;
