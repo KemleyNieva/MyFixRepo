@@ -23,6 +23,10 @@ public class Movie {
         return String.format("https://image.tmdb.org/t/p/w342/%s",posterPath);
     }
 
+    public String getBackdrop() {
+        return String.format("https://image.tmdb.org/t/p/w780/%s",backdrop);
+    }
+
     public String getOverview() {
         return overview;
     }
@@ -30,6 +34,7 @@ public class Movie {
     String title;
     String posterPath;
     String overview;
+    String backdrop;
 
     /*public Movie(String title, String posterUrl, int rating) {
         this.title = title;
@@ -40,6 +45,7 @@ public class Movie {
         this.posterPath = jsonObject.getString("poster_path");
         this.title = jsonObject.getString("original_title");
         this.overview = jsonObject.getString("overview");
+        this.backdrop = jsonObject.getString("backdrop_path");
     }
 
     public static ArrayList<Movie> fromJSONArray(JSONArray array) throws JSONException {

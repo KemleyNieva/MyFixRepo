@@ -1,5 +1,7 @@
 package com.codepath.flixster;
 
+import android.app.Activity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -22,6 +25,8 @@ public class MoviesActivity extends AppCompatActivity {
     ArrayList<Movie> movies;
     MoviesAdapter movieAdapter;
     ListView lvItems;
+    JSONArray movieJsonResults;
+    AsyncHttpClient client = new AsyncHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +40,12 @@ public class MoviesActivity extends AppCompatActivity {
 
         String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
 
-        AsyncHttpClient client = new AsyncHttpClient();
+
 
         client.get(url,new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                JSONArray movieJsonResults = null;
+                movieJsonResults = null;
 
                 try {
                     movieJsonResults = response.getJSONArray("results");
@@ -60,19 +65,57 @@ public class MoviesActivity extends AppCompatActivity {
             }
         });
 
-        //1.Get the actual moves
 
-
-        /*//2. Get the ListView that we want to populate
-        ListView lvMovies = (ListView)findViewById(R.id.lvMovies);
-
-        //3. Create an ArrayAdapter
-        //ArrayAdapter<Movie> adapter = new ArrayAdapter<Movie>(this, android.R.layout.simple_list_item_1, movies);
-        MoviesAdapter adapter = new MoviesAdapter(this,movies);
-
-        //4. Associate the adapter with the ListView
-        if(lvMovies != null) {
-            lvMovies.setAdapter(adapter);
-        }*/
     }
+/*
+
+    private SwipeRefreshLayout swipeContainer;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Only ever call `setContentView` once right at the top
+        setContentView(R.layout.item_movie);
+        // Lookup the swipe container view
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                swipeContainer.setRefreshing(false);
+                fetchTimelineAsync(0);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+    }
+
+    public void fetchTimelineAsync(int page) {
+        // Send the network request to fetch the updated data
+        // `client` here is an instance of Android Async HTTP
+        client.getHomeTimeline(0, new JsonHttpResponseHandler() {
+            public void onSuccess(JSONArray json) {
+                // Remember to CLEAR OUT old items before appending in the new ones
+                MoviesAdapter.clear();
+                // ...the data has come back, add new items to your adapter...
+                try {
+                    MoviesAdapter.addAll(Movie.fromJSONArray(movieJsonResults));
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                // Now we call setRefreshing(false) to signal refresh has finished
+                swipeContainer.setRefreshing(false);
+            }
+
+            public void onFailure(Throwable e) {
+                Log.d("DEBUG", "Fetch timeline error: " + e.toString());
+            }
+        });
+    }*/
 }

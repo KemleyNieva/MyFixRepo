@@ -5,6 +5,7 @@ package com.codepath.flixster;
  */
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,11 +41,23 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
             TextView tvOverview = (TextView) convertView.findViewById(R.id.tvOverview);
 
+            //ImageView ivBackdrop = (ImageView) convertView.findViewById(R.id.ivBackdrop);
+            //ImageView ivPoster = (ImageView) convertView.findViewById(R.id.ivPoster);
 
-            ImageView ivPoster = (ImageView) convertView.findViewById(R.id.ivPoster);
+            boolean isLandscape = getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+
             //takes out old
-            ivPoster.setImageResource(0);
+            if(isLandscape) {
+                ImageView ivBackdrop = (ImageView) convertView.findViewById(R.id.ivBackdrop);
+                ivBackdrop.setImageResource(0);
+                String url = movie.getBackdrop();
+                Picasso.with(getContext()).load(url).into(ivBackdrop);
 
+            } else {
+                ImageView ivPoster = (ImageView) convertView.findViewById(R.id.ivPoster);
+                ivPoster.setImageResource(0);
+                Picasso.with(getContext()).load(movie.getPosterPath()).into(ivPoster);
+            }
 
             // Populate the data into the template view using the data object
             tvTitle.setText(movie.title);
@@ -53,7 +66,8 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             /*Log.d("MoviesAdapter","Position: " + position);
 
             String imageUri = "https://i.imgur.com/tGbaZCY.jpg";*/
-            Picasso.with(getContext()).load(movie.getPosterPath()).into(ivPoster);
+            //Picasso.with(getContext()).load(movie.getBackdrop()).into(ivBackdrop);
+            //Picasso.with(getContext()).load(movie.getPosterPath()).into(ivPoster);
 
             // Return the completed view to render on screen
             return convertView;
