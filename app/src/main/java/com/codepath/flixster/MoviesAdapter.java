@@ -20,6 +20,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+
 public class MoviesAdapter extends ArrayAdapter<Movie> {
 
 
@@ -51,12 +53,12 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
                 ImageView ivBackdrop = (ImageView) convertView.findViewById(R.id.ivBackdrop);
                 ivBackdrop.setImageResource(0);
                 String url = movie.getBackdrop();
-                Picasso.with(getContext()).load(url).into(ivBackdrop);
+                Picasso.with(getContext()).load(url).placeholder(R.drawable.user_placeholder).transform(new RoundedCornersTransformation(10,10)).into(ivBackdrop);
 
             } else {
                 ImageView ivPoster = (ImageView) convertView.findViewById(R.id.ivPoster);
                 ivPoster.setImageResource(0);
-                Picasso.with(getContext()).load(movie.getPosterPath()).into(ivPoster);
+                Picasso.with(getContext()).load(movie.getPosterPath()).placeholder(R.drawable.user_placeholder).transform(new RoundedCornersTransformation(10,10)).into(ivPoster);
             }
 
             // Populate the data into the template view using the data object
