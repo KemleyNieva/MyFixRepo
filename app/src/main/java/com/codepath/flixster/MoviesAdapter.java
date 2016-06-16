@@ -24,6 +24,10 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class MoviesAdapter extends ArrayAdapter<Movie> {
 
+    private static class ViewHolder {
+        TextView tvTitle;
+        TextView tvOverview;
+    }
 
     public MoviesAdapter(Context context, List<Movie> movies){
         super(context, R.layout.item_movie,movies);
@@ -34,17 +38,24 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             // Get the data item for this position
             Movie movie = getItem(position);
 
+
+            ViewHolder viewHolder;
             // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_movie, parent, false);
+                //convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_movie, parent, false);
+                viewHolder = new ViewHolder();
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(R.layout.item_movie, parent, false);
+                viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+                viewHolder.tvOverview = (TextView) convertView.findViewById(R.id.tvOverview);
+                convertView.setTag(viewHolder);
+
+            }else {
+            viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            // Lookup view for data population
-            TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-            TextView tvOverview = (TextView) convertView.findViewById(R.id.tvOverview);
 
-            //ImageView ivBackdrop = (ImageView) convertView.findViewById(R.id.ivBackdrop);
-            //ImageView ivPoster = (ImageView) convertView.findViewById(R.id.ivPoster);
+        // Lookup view for data population
 
             boolean isLandscape = getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
@@ -62,14 +73,10 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             }
 
             // Populate the data into the template view using the data object
-            tvTitle.setText(movie.title);
-            tvOverview.setText(movie.getOverview());
+            viewHolder.tvTitle.setText(movie.title);
+            viewHolder.tvOverview.setText(movie.getOverview());
 
-            /*Log.d("MoviesAdapter","Position: " + position);
 
-            String imageUri = "https://i.imgur.com/tGbaZCY.jpg";*/
-            //Picasso.with(getContext()).load(movie.getBackdrop()).into(ivBackdrop);
-            //Picasso.with(getContext()).load(movie.getPosterPath()).into(ivPoster);
 
             // Return the completed view to render on screen
             return convertView;
