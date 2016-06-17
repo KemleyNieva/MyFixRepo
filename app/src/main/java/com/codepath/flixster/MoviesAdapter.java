@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -27,6 +28,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
     private static class ViewHolder {
         TextView tvTitle;
         TextView tvOverview;
+        RatingBar rating;
     }
 
     public MoviesAdapter(Context context, List<Movie> movies){
@@ -48,6 +50,10 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
                 convertView = inflater.inflate(R.layout.item_movie, parent, false);
                 viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
                 viewHolder.tvOverview = (TextView) convertView.findViewById(R.id.tvOverview);
+                viewHolder.rating = (RatingBar) convertView.findViewById(R.id.ratingBar);
+                RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
+                ratingBar.setStepSize( (float) 0.25 );
+                ratingBar.setRating(movie.getRating());
                 convertView.setTag(viewHolder);
 
             }else {
@@ -73,6 +79,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             }
 
             // Populate the data into the template view using the data object
+            viewHolder.rating.setRating(movie.rating);
             viewHolder.tvTitle.setText(movie.title);
             viewHolder.tvOverview.setText(movie.getOverview());
 

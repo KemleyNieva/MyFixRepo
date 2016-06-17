@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RatingBar;
 
 import com.codepath.flixster.Movie;
 import com.loopj.android.http.AsyncHttpClient;
@@ -39,9 +40,10 @@ public class MoviesActivity extends AppCompatActivity {
         movieAdapter = new MoviesAdapter(this, movies);
         lvItems.setAdapter(movieAdapter);
 
+
+
+
         String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
-
-
 
         client.get(url,new JsonHttpResponseHandler(){
             @Override
